@@ -11,10 +11,6 @@ var PORT = 7443;
 var HOST = 'viveksam.southindia.cloudapp.azure.com';
 app = express();
 
-app.configure(function(){
-    app.use(app.router);
-});
-
 server = https.createServer(https_options, app).listen(PORT, HOST);
 console.log('HTTPS Server listening on %s:%s', HOST, PORT);
 
