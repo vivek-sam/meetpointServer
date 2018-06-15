@@ -24,11 +24,11 @@ Functions
 function validateToken(token) {
     console.log(token);
     console.log(recognizedToken);
-    
-    if(token == recognizedToken) {
-        return "true";
+
+    if(token.equals(recognizedToken) == true) {
+        return true;
     }
-    return "false";
+    return false;
 }
 
 app = express();
@@ -66,8 +66,8 @@ app.get('/showvalues', function(req, res) {
 app.post('/showhosts', function(req, res) {
     console.log("Received /showhosts request");
     var token = req.body.token;
-    var validationResult = validateToken(token);
-    if(validationResult === "true") {
+    var validationResult = validateToken(token.trim());
+    if(validationResult == true) {
         console.log("Replied /showhosts request");
         res.json({bangalore: "Direct IP"});
     } else {
