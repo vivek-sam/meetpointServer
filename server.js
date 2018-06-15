@@ -20,16 +20,23 @@ server = https.createServer(https_options, app).listen(PORT);
 // routes
 app.get('/', function (req, res) {
     res.header('Content-type', 'text/html');
-    return res.end('Hello World!');
+    return res.end('meetingpoint Server, testing server, just to see a reply');
 });
 
+/*
 app.get('/hey', function(req, res) {
     res.header('Content-type', 'text/html');
     return res.end('Hey!');
 });
+
 app.post('/ho', function(req, res) {
     res.header('Content-type', 'text/html');
     return res.end('Ho!');
 });
+*/
+
+app.get('/showvalues', function(req, res) {
+    res.json({bangalore: "Direct IP"})
+})
 
 console.log('HTTPS Server listening on %s:%s', HOST, PORT);
