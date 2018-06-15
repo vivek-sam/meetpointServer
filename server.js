@@ -32,4 +32,4 @@ app.post('/ho', function(req, res) {
     return res.end('Ho!');
 });
 
-console.log('HTTPS Server listening on %s:%s', server.HOST, server.PORT);
+console.log('HTTPS Server listening on %s:%s', HOST, PORT);
