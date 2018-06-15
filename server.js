@@ -56,6 +56,7 @@ app.post('/ho', function(req, res) {
 app.get('/showvalues', function(req, res) {
     console.log("Received /showvalues request");
     res.json({gettesting: "123"})
+    res.end();
 });
 
 app.post('/showhosts', function(req, res) {
@@ -73,7 +74,7 @@ app.post('/showhosts', function(req, res) {
     else {
         res.json({testing: "123"});
     }
-    
+    res.end();
 });
 
 app.post('/addhost', function(req, res) {
@@ -84,7 +85,7 @@ app.post('/addhost', function(req, res) {
     } else {
         res.json({testing: "123"});
     }
-
+    res.end();
 });
 
 console.log('HTTPS Server listening on %s:%s', HOST, PORT);
