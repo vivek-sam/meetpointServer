@@ -62,6 +62,7 @@ app.get('/showvalues', function(req, res) {
 
 app.post('/showhosts', function(req, res) {
     console.log("Received /showhosts request");
+    console.log(req);
     var token = req.body.token;
     var validationResult = validateToken(token);
     if(validationResult === "true") {
