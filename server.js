@@ -119,7 +119,7 @@ app.post('/showhosts', function(req, res) {
     
     if(validationResult == true) {
         logger.info('Replied /showhosts request');
-        res.json({bangalore: "Direct IP"});
+        res.json({operation: "showhosts",status: "SUCCESS"});
     } else {
         res.json({testingshowhosts: "123"});
     }
@@ -127,7 +127,7 @@ app.post('/showhosts', function(req, res) {
 
 app.post('/addhost', function(req, res) {
     logger.info('Received /addhost requestfrom IP %s', req.ip);
-    logger.info('Body %s', req.body.toString());
+    logger.info('Body %s', req.body.json.toString());
 
     var token = req.body.token;
     var validationResult = validateToken(token);
