@@ -38,6 +38,7 @@ server = https.createServer(https_options, app).listen(PORT);
 app.get('/', function (req, res) {
     res.header('Content-type', 'text/html');
     return res.end('meetingpoint Server, testing server, just to see a reply');
+    console.log("Received root request");
 });
 
 /*
@@ -53,11 +54,12 @@ app.post('/ho', function(req, res) {
 */
 
 app.get('/showvalues', function(req, res) {
+    console.log("Received /showvalues request");
     res.json({gettesting: "123"})
 });
 
 app.post('/showhosts', function(req, res) {
-    
+    console.log("Received /showhosts request");
     var token = req.body.token;
     var validationResult = validateToken(token);
     if(validationResult === "true") {
@@ -72,7 +74,7 @@ app.post('/showhosts', function(req, res) {
 });
 
 app.post('/addhost', function(req, res) {
-
+    console.log("Received /addhost request");
     var token = req.body.token;
     if(validateToken(token) === "true") {
         res.json({bangalore: "Direct IP"});
