@@ -1,19 +1,28 @@
-var https = require('https');
 var fs = require('fs');
-express = require('express'),
-
-app = express();
- 
-var options = {
-  key: fs.readFileSync('wallet/privateKey.key'),
-  cert: fs.readFileSync('wallet/certificate.crt')
+var express = require('express');
+var https = require('https');
+var key = fs.readFileSync('wallet/privateKey.key');
+var cert = fs.readFileSync('wallet/certificate.crt')
+var https_options = {
+    key: key,
+    cert: cert
 };
- 
-https.createServer(options, app).listen(7443);
- 
-app.get('/', function (req, res) {
-  res.header('Content-type', 'text/html');
-  return res.end('Hello World!');
+var PORT = 7443;
+var HOST = 'viveksam.southindia.cloudapp.azure.com';
+app = express();
+
+app.configure(function(){
+    app.use(app.router);
 });
- 
-console.log("listening to port 7443");
+
+server = https.createServer(https_options, app).listen(PORT, HOST);
+console.log('HTTPS Server listening on %s:%s', HOST, PORT);
+
+
+// routes
+app.get('/hey', function(req, res) {
+    res.send('HEY!');
+});
+app.post('/ho', function(req, res) {
+    res.send('HO!');
+});
