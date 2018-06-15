@@ -25,7 +25,7 @@ function validateToken(token) {
     console.log(token);
     console.log(recognizedToken);
 
-    if(token.equals(recognizedToken) == true) {
+    if(token.toString().equals(recognizedToken.trim()) == true) {
         return true;
     }
     return false;
