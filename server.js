@@ -127,8 +127,8 @@ app.post('/showhosts', function(req, res) {
 
 app.post('/addhost', function(req, res) {
     logger.info('Received /addhost requestfrom IP %s', req.ip);
-    logger.info('Body %s', req.body);
-    
+    logger.info('Body %s', req.body.toString());
+
     var token = req.body.token;
     var validationResult = validateToken(token);
     
@@ -138,7 +138,7 @@ app.post('/addhost', function(req, res) {
         var wanIP = req.body.hostWANIP;
 
         logger.info('Replied /addhost request');
-        res.json({status: "SUCCESS"});
+        res.json({operation: "addhost",status: "SUCCESS"});
     } else {
         res.json({testingaddhost: "123"});
     }
