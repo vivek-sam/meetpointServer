@@ -31,6 +31,7 @@ function validateToken(token) {
 
     return token === recognizedToken;
 }
+
 function exitHandler(options, err) {
     if (options.cleanup) logger.debug('Server Exiting...');
     if (err) logger.debug(err.stack);
@@ -126,13 +127,18 @@ app.post('/showhosts', function(req, res) {
 
 app.post('/addhost', function(req, res) {
     logger.info('Received /addhost requestfrom IP %s', req.ip);
-
+    logger.info('Body %s', req.body);
+    
     var token = req.body.token;
     var validationResult = validateToken(token);
     
-    if(validationResult === "true") {
+    if(validationResult == true) {
+        //store the replace the data in the store
+        var host = req.body.hostMachine;
+        var wanIP = req.body.hostWANIP;
+
         logger.info('Replied /addhost request');
-        res.json({bangalore: "Direct IP"});
+        res.json({status: "SUCCESS"});
     } else {
         res.json({testingaddhost: "123"});
     }
