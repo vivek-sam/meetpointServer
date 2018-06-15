@@ -39,7 +39,7 @@ if (!fs.existsSync(logDir)) {
 
 const tsFormat = () => (new Date()).toLocaleTimeString();
 var now = new Date();
-var logfile_name = `${logDir}` + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() +'/server.log';
+var logfile_name = `${logDir}`+ '/' + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() +'server.log';
 
 var logger = new (winston.Logger)({
     transports: [
