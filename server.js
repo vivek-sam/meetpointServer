@@ -63,9 +63,11 @@ app.post('/showhosts', function(req, res) {
     var token = req.body.token;
     var validationResult = validateToken(token);
     if(validationResult === "true") {
+        console.log("Replied /showhosts request");
         res.json({bangalore: "Direct IP"});
     } else if (validationResult === "mytoken") {
-
+        console.log("Replied /showhosts request validated token");
+        res.json({bangalore: "Direct IP"});
     }
     else {
         res.json({testing: "123"});
