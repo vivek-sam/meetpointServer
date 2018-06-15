@@ -22,7 +22,10 @@ var recognizedToken = fs.readFileSync('wallet/token').toString();
 Functions
 */
 function validateToken(token) {
-    if(token === recognizedToken) {
+    console.log(token);
+    console.log(recognizedToken);
+    
+    if(token == recognizedToken) {
         return "true";
     }
     return "false";
@@ -62,7 +65,6 @@ app.get('/showvalues', function(req, res) {
 
 app.post('/showhosts', function(req, res) {
     console.log("Received /showhosts request");
-    console.log(req);
     var token = req.body.token;
     var validationResult = validateToken(token);
     if(validationResult === "true") {
