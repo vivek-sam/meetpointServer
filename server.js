@@ -16,7 +16,7 @@ var https_options = {
 
 var PORT = 7443;
 var HOST = 'viveksam.southindia.cloudapp.azure.com';
-var recognizedToken = fs.readFileSync('wallet/token');
+var recognizedToken = fs.readFileSync('wallet/token').toString();
 
 /*
 Functions
