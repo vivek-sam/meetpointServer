@@ -16,15 +16,16 @@ var https_options = {
 
 var PORT = 7443;
 var HOST = 'viveksam.southindia.cloudapp.azure.com';
+var recognizedToken = fs.readFileSync('wallet/token');
 
 /*
 Functions
 */
 function validateToken(token) {
-    if(token === "mytoken") {
-        return "mytoken";
+    if(token === recognizedToken) {
+        return "true";
     }
-    return "true";
+    return "false";
 }
 
 app = express();
@@ -62,16 +63,11 @@ app.get('/showvalues', function(req, res) {
 app.post('/showhosts', function(req, res) {
     console.log("Received /showhosts request");
     var token = req.body.token;
-    console.log("token : %s", token);
     var validationResult = validateToken(token);
     if(validationResult === "true") {
         console.log("Replied /showhosts request");
         res.json({bangalore: "Direct IP"});
-    } else if (validationResult === "mytoken") {
-        console.log("Replied /showhosts request validated token");
-        res.json({bangalore: "Direct IP"});
-    }
-    else {
+    } else {
         res.json({testing: "123"});
     }
     res.end();
@@ -80,7 +76,8 @@ app.post('/showhosts', function(req, res) {
 app.post('/addhost', function(req, res) {
     console.log("Received /addhost request");
     var token = req.body.token;
-    if(validateToken(token) === "true") {
+    var validationResult = validateToken(token);
+    if(validationResult === "true") {
         res.json({bangalore: "Direct IP"});
     } else {
         res.json({testing: "123"});
