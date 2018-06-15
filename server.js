@@ -22,13 +22,13 @@ var recognizedToken = fs.readFileSync('wallet/token').toString();
 Functions
 */
 function validateToken(token) {
+    token = token.trim();
+    recognizedToken = recognizedToken.trim();
+    
     console.log(token);
     console.log(recognizedToken);
 
-    if(token.toString().equals(recognizedToken.trim()) == true) {
-        return true;
-    }
-    return false;
+    return token === recognizedToken;
 }
 
 app = express();
@@ -66,7 +66,8 @@ app.get('/showvalues', function(req, res) {
 app.post('/showhosts', function(req, res) {
     console.log("Received /showhosts request");
     var token = req.body.token;
-    var validationResult = validateToken(token.trim());
+    var validationResult = validateToken(token);
+    console.log(validationResult);
     if(validationResult == true) {
         console.log("Replied /showhosts request");
         res.json({bangalore: "Direct IP"});
