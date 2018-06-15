@@ -31,6 +31,27 @@ function validateToken(token) {
 
     return token === recognizedToken;
 }
+function exitHandler(options, err) {
+    if (options.cleanup) logger.debug('Server Exiting...');
+    if (err) logger.debug(err.stack);
+    if (options.exit) {
+        logger.debug('Server Exiting...');
+        process.exit();
+    }
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
+process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
 // Create the log directory if it does not exist
 if (!fs.existsSync(logDir)) {
@@ -88,7 +109,6 @@ app.post('/ho', function(req, res) {
 app.get('/showvalues', function(req, res) {
     logger.info('Received /showvalues request from IP %s', req.ip);
     res.json({gettesting: "123"})
-    req.end();
 });
 
 app.post('/showhosts', function(req, res) {
@@ -102,7 +122,6 @@ app.post('/showhosts', function(req, res) {
     } else {
         res.json({testingshowhosts: "123"});
     }
-    req.end();
 });
 
 app.post('/addhost', function(req, res) {
@@ -117,7 +136,6 @@ app.post('/addhost', function(req, res) {
     } else {
         res.json({testingaddhost: "123"});
     }
-    req.end();
 });
 
 logger.info('HTTPS Server listening on %s:%s', HOST, PORT);
