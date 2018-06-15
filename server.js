@@ -1,13 +1,16 @@
 var fs = require('fs');
 var express = require('express');
 var https = require('https');
-var key = fs.readFileSync('wallet/privateKey.key');
-var cert = fs.readFileSync('wallet/certificate.crt')
+var key = fs.readFileSync('wallet/server-key.pem');
+var cert = fs.readFileSync('wallet/server-crt.pem');
+var ca = fs.readFileSync('wallet/ca-crt.pem');
 
 var https_options = {
     key: key,
-    cert: cert
+    cert: cert,
+    ca: ca
 };
+
 var PORT = 7443;
 var HOST = 'viveksam.southindia.cloudapp.azure.com';
 app = express();
@@ -29,4 +32,4 @@ app.post('/ho', function(req, res) {
     return res.end('Ho!');
 });
 
-console.log('HTTPS Server listening on %s:%s', HOST, PORT);
+console.log('HTTPS Server listening on %s:%s', server.app().HOST, server.app().PORT);
