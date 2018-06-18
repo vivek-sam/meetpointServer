@@ -3,6 +3,7 @@ var express = require('express');
 var https = require('https');
 var bodyParser = require('body-parser');
 const winston = require('winston');
+const storage = require('node-persist');
 
 const logDir = '../working/log';
 var key = fs.readFileSync('wallet/server-key.pem');
@@ -40,6 +41,20 @@ function exitHandler(options, err) {
         process.exit();
     }
 }
+
+//initialize the storage
+await storage.init({
+    dir: '../working/data',
+    stringify: JSON.stringify,
+    parse: JSON.parse,
+    encoding: 'utf8',
+    logging: false,  // can also be custom logging function
+    ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS
+    expiredInterval: 12 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
+    // in some cases, you (or some other service) might add non-valid storage files to your
+    // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
+    forgiveParseErrors: false
+});
 
 //do something when app is closing
 process.on('exit', exitHandler.bind(null,{cleanup:true}));
@@ -119,23 +134,38 @@ app.post('/showhosts', function(req, res) {
     
     if(validationResult == true) {
         logger.info('Replied /showhosts request');
-        res.json({operation: "showhosts",status: "SUCCESS"});
+        var allwanIPs = await storage.values();
+        res.json({'operation': "showhosts",'status': "SUCCESS", hosts: allwanIPs});
     } else {
         res.json({testingshowhosts: "123"});
     }
 });
 
 app.post('/addhost', function(req, res) {
-    logger.info('Received /addhost requestfrom IP %s', req.ip);
-    logger.info('Body %s', req.body.json.toString());
+    logger.info('Received /addhost request from IP %s', req.ip);
 
     var token = req.body.token;
     var validationResult = validateToken(token);
     
     if(validationResult == true) {
         //store the replace the data in the store
-        var host = req.body.hostMachine;
-        var wanIP = req.body.hostWANIP;
+        var host = req.body.hostMachine.toString();
+        var wanIP = req.body.hostWANIP.toString();
+
+        logger.debug("Host : %s, wanIP : %s", host, wanIP);
+
+        let oldwanIP = await storage.getItem(host);
+
+        if (! oldwanIP) {
+            await storage.setItem(host, wanIP);
+            logger.info('Setting Host : %s',host);
+        }
+        else {
+            await storage.setItem(host, wanIP);
+            logger.info('Resetting Host : %s',host);
+        }
+        let newwanIP = await storage.getItem(host);
+        logger.info('wanIP : %s',newwanIP);
 
         logger.info('Replied /addhost request');
         res.json({operation: "addhost",status: "SUCCESS"});
