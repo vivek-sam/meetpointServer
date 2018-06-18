@@ -134,7 +134,7 @@ app.post('/showhosts', function(req, res) {
     
     if(validationResult == true) {
         logger.info('Replied /showhosts request');
-        var allwanIPs = await storage.values();
+        var allwanIPs = storage.values();
         res.json({'operation': "showhosts",'status': "SUCCESS", hosts: allwanIPs});
     } else {
         res.json({testingshowhosts: "123"});
@@ -154,17 +154,17 @@ app.post('/addhost', function(req, res) {
 
         logger.debug("Host : %s, wanIP : %s", host, wanIP);
 
-        let oldwanIP = await storage.getItem(host);
+        let oldwanIP = storage.getItem(host);
 
         if (! oldwanIP) {
-            await storage.setItem(host, wanIP);
+            storage.setItem(host, wanIP);
             logger.info('Setting Host : %s',host);
         }
         else {
-            await storage.setItem(host, wanIP);
+            storage.setItem(host, wanIP);
             logger.info('Resetting Host : %s',host);
         }
-        let newwanIP = await storage.getItem(host);
+        let newwanIP = storage.getItem(host);
         logger.info('wanIP : %s',newwanIP);
 
         logger.info('Replied /addhost request');
