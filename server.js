@@ -134,10 +134,16 @@ app.post('/showhosts', function(req, res) {
     
     if(validationResult == true) {
         logger.info('Replied /showhosts request');
+        var allwanIPs="{";
         storage.forEach(async function(datum) {
             // use datum.key and datum.value
+            logger.debug('Host : %s, WanIP : %s',datum.key,datum.value);
+            allwanIPs+=datum.key+":"+datum.value+",";
         });
-        res.json({'operation': "showhosts",'status': "SUCCESS", hosts: allwanIPs});
+        allwanIPs=allwanIPs.slice(0, -1);
+        allwanIPs+="}";
+        logger.debug("List : %s",allwanIPs)
+        res.json({'operation': "showhosts",'status': "SUCCESS", 'hosts': allwanIPs});
     } else {
         res.json({testingshowhosts: "123"});
     }
