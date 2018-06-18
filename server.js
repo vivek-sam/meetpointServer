@@ -165,7 +165,7 @@ app.post('/addhost', function(req, res) {
             logger.info('Resetting Host : %s',host);
         }
         let newwanIP = storage.getItem(host);
-        logger.info('wanIP : %s',newwanIP);
+        logger.info('wanIP : %s',newwanIP.toString());
 
         logger.info('Replied /addhost request');
         res.json({operation: "addhost",status: "SUCCESS"});
