@@ -43,7 +43,7 @@ function exitHandler(options, err) {
 }
 
 //initialize the storage
-await storage.init({
+storage.init({
     dir: '../working/data',
     stringify: JSON.stringify,
     parse: JSON.parse,
