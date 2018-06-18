@@ -132,18 +132,21 @@ app.post('/showhosts', function(req, res) {
     var token = req.body.token;
     var validationResult = validateToken(token);
     
+    var allwanIPs="{";
     if(validationResult == true) {
-        logger.info('Replied /showhosts request');
-        var allwanIPs="{";
+        logger.info('Replied /showhosts request');        
         storage.forEach(async function(datum) {
             // use datum.key and datum.value
-            logger.debug('Host : %s, WanIP : %s',datum.key,datum.value);
+            logger.debug('for each Host : %s, WanIP : %s',datum.key,datum.value);
             allwanIPs+=datum.key+":"+datum.value+",";
-        });
-        allwanIPs=allwanIPs.slice(0, -1);
-        allwanIPs+="}";
-        logger.debug("List : %s",allwanIPs)
-        res.json({'operation': "showhosts",'status': "SUCCESS", 'hosts': allwanIPs});
+        })
+        .then (() => {
+            allwanIPs=allwanIPs.slice(0, -1);
+            allwanIPs+="}";
+            logger.debug("List : %s",allwanIPs)
+            res.json({'operation': "showhosts",'status': "SUCCESS", 'hosts': allwanIPs});    
+        })
+        .catch(err => logger.error(err));
     } else {
         res.json({testingshowhosts: "123"});
     }
